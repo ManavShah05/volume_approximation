@@ -17,8 +17,6 @@ function(Get_LP_Solver)
                 FetchContent_Populate(lpSolve)
                 message(STATUS "Download complete")
 
-                #//ExternalProject_Add(DOWNLOAD_DIR ../external)
-
                 set(LPSOLVE_DIR ${lpSolve_SOURCE_DIR})
                 message(STATUS "Using downloaded lp_solve at: ${LPSOLVE_DIR}")
 
