@@ -1,34 +1,35 @@
 function(Get_LP_Solver)
-find_path(BOOST_DIR NAMES Eigen PATHS ../../external)
+    find_path(LPSOLVE_DIR NAMES LPsolve_src PATHS ../../external)
+    
+    if(NOT LPSOLVE_DIR)
+    
+        include(FetchContent)
+            FetchContent_Declare(
+                lpSolve
+                URL https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.11/lp_solve_5.5.2.11_source.tar.gz/download 
+                URL_HASH MD5=a829a8d9c60ff81dc72ff52363703886
+            )
+        
+            FetchContent_GetProperties(lpSolve)
+            
+            if(NOT lpSolve_POPULATE)
+                message(STATUS "Downloading lp_solve.")
+                FetchContent_Populate(lpSolve)
+                message(STATUS "Download complete")
 
-if (NOT BOOST_DIR) 
+                #//ExternalProject_Add(DOWNLOAD_DIR ../external)
 
-set(BOOST_URL "https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2" CACHE STRING "Boost download URL")
-set(BOOST_URL_SHA256 "d73a8da01e8bf8c7eda40b4c84915071a8c8a0df4a6734537ddde4a8580524ee" CACHE STRING "Boost download URL SHA256 checksum")
+                set(LPSOLVE_DIR ${lpSolve_SOURCE_DIR})
+                message(STATUS "Using downloaded lp_solve at: ${LPSOLVE_DIR}")
 
-include(FetchContent)
-FetchContent_Declare(
-  Boost
-  URL ${BOOST_URL}
-  URL_HASH SHA256=${BOOST_URL_SHA256}
-)
-FetchContent_GetProperties(Boost)
+            else()
+                message(STATUS "lp_solve found:  ${LPSOLVE_DIR}")
 
-if(NOT Boost_POPULATED)
-  message(STATUS "Fetching Boost")
-  FetchContent_Populate(Boost)
-  message(STATUS "Fetching Boost - done")
-  set(BOOST_DIR ${boost_SOURCE_DIR})
-endif()
+            endif()
 
-message(STATUS "Using downloaded Boost library at ${BOOST_DIR}")
+    endif()
 
-else ()
-message(STATUS "Boost Library found: ${BOOST_DIR}")
-
-endif()
-
-include_directories(${BOOST_DIR})
-include_directories(${BOOST_DIR}/boost)
+        include_directories($(LPSOLVE_DIR))
+        include_directories(${LPSOLVE_DIR}/lpSolve)
     
 endfunction()
