@@ -62,11 +62,10 @@ endif(COMMAND cmake_policy)
 include("lp_solver.cmake")
 Get_LP_Solver()
 
-#find_library(LP_SOLVE NAMES liblpsolve55.so liblpsolve55.dylib PATHS /usr/lib/lp_solve /opt/local/lib)
-
 if (NOT LP_SOLVE)
 
   message(FATAL_ERROR "This program requires the lp_solve library, and will not be compiled.")
+  
 
 else ()
 
@@ -100,8 +99,8 @@ else ()
     add_compile_definitions("EIGEN_NO_DEBUG")
   endif ()
 
-  add_definitions(${CMAKE_CXX_FLAGS} "-std=c++11")  # enable C++11 standard
-  add_definitions(${CMAKE_CXX_FLAGS} "-g")  # enable debuger
+  add_definitions(${CMAKE_CXX_FLAGS} "-std=c++11")  #enable C++11 standard
+  add_definitions(${CMAKE_CXX_FLAGS} "-g")  #enable debuger
   #add_definitions(${CMAKE_CXX_FLAGS} "-Wint-in-bool-context")
   #add_definitions(${CMAKE_CXX_FLAGS} "-Wall")
 
